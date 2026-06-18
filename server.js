@@ -29,7 +29,21 @@ app.use('/uploads', express.static(path.join(__dirname, 'Uploads')));
 app.use('/api/auth', authRoutes);
 app.use('/api/characters', charecterRoutes);
 
-// Health check endpoint
+// Home Route
+app.get('/', (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: 'Rick & Morty Character Management System API',
+    endpoints: {
+      health: '/api/health',
+      register: '/api/auth/register',
+      login: '/api/auth/login',
+      characters: '/api/characters',
+    },
+  });
+});
+
+// Health Check Route
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     success: true,
@@ -37,7 +51,7 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 404 handler
+// 404 Handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -45,7 +59,7 @@ app.use((req, res) => {
   });
 });
 
-// Error handling middleware
+// Error Handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
 
@@ -56,14 +70,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start server
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`
 ╔═══════════════════════════════════════════════════════════╗
 ║  🚀 Rick & Morty Character Management System             ║
-║  Server running on http://localhost:${PORT}                      ║
-║  Environment: ${process.env.NODE_ENV || 'development'}                       ║
+║  Server running on port ${PORT}                          ║
+║  Environment: ${process.env.NODE_ENV || 'development'}   ║
 ╚═══════════════════════════════════════════════════════════╝
   `);
 });
